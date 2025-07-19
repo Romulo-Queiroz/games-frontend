@@ -1,22 +1,16 @@
 import { useState } from 'react';
+import { Container, Typography } from '@mui/material';
+import { getRecommendedGame, type RecommendedGameDto } from './api/gamesApi';
 import GameForm from './components/gameForm';
 import GameResult from './components/gameResult';
-import { getRecommendedGame } from './api/gamesApi';  
-
-interface Game {
-  title: string;
-  gameUrl: string;
-}
 
 function App() {
-  const [game, setGame]   = useState<Game | null>(null);
+  // Estado para o jogo recomendado e erro
+  const [game, setGame] = useState<RecommendedGameDto | null>(null);
   const [error, setError] = useState<string>('');
 
-  const handleSearch = async (filters: {
-    genres: string[];
-    platform: string;
-    memory: number;
-  }) => {
+  // Função que chama a API e atualiza estados
+  const handleSearch = async (filters: { genres: string[]; platform: string; memory: number }) => {
     setError('');
     setGame(null);
     try {
@@ -24,7 +18,7 @@ function App() {
       setGame(data);
     } catch (err: any) {
       if (err.response?.status === 404) {
-        setError(err.response.data);
+        setError(err.response.data as string);
       } else {
         setError('Erro ao buscar o jogo. Tente novamente.');
       }
@@ -32,11 +26,13 @@ function App() {
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: '2rem auto' }}>
-      <h1>Recomendador de Jogos</h1>
+    <Container>
+      <Typography variant="h3" align="center" sx={{ mt: 4 }}>
+        Recomendador de Jogos
+      </Typography>
       <GameForm onSearch={handleSearch} />
       <GameResult game={game} error={error} />
-    </div>
+    </Container>
   );
 }
 

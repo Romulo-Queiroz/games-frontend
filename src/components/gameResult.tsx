@@ -1,4 +1,13 @@
-import type { FC } from 'react';
+import type { FC } from 'react'; // ✅ importa só o tipo
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Link,
+  Typography,
+  /* … demais componentes MUI … */
+} from '@mui/material';
 
 interface GameResultProps {
   game: { title: string; gameUrl: string } | null;
@@ -7,19 +16,26 @@ interface GameResultProps {
 
 const GameResult: FC<GameResultProps> = ({ game, error }) => {
   if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
+    return <Typography color="error">{error}</Typography>;
   }
-  if (!game) {
-    return null;
-  }
+  if (!game) return null;
+
   return (
-    <div>
-      <h2>Jogo recomendado:</h2>
-      <p><strong>{game.title}</strong></p>
-      <a href={game.gameUrl} target="_blank" rel="noopener noreferrer">
-        Abrir no FreeToGame
-      </a>
-    </div>
+    <Card sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}>
+      <CardContent>
+        <Typography variant="h5" component="div">
+          Jogo recomendado:
+        </Typography>
+        <Typography variant="h6" sx={{ mt: 1 }}>
+          {game.title}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" component={Link} href={game.gameUrl} target="_blank">
+          Abrir no FreeToGame
+        </Button>
+      </CardActions>
+    </Card>
   );
 };
 

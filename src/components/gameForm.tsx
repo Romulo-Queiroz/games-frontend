@@ -1,6 +1,16 @@
-// src/components/GameForm.tsx
 import { useState } from 'react';
-import type { ChangeEvent, FormEvent } from 'react';
+import type { FC, ChangeEvent, FormEvent } from 'react';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  MenuItem,
+  Select,
+  Stack,
+} from '@mui/material';
+import type { SelectChangeEvent } from '@mui/material';
 
 interface GameFormProps {
   onSearch: (filters: {
@@ -10,10 +20,10 @@ interface GameFormProps {
   }) => void;
 }
 
-export default function GameForm({ onSearch }: GameFormProps) {
+const GameForm: FC<GameFormProps> = ({ onSearch }) => {
   const [genresText, setGenresText] = useState<string>('');
-  const [platform, setPlatform]     = useState<'all' | 'pc' | 'browser'>('all');
-  const [memory, setMemory]         = useState<string>('');
+  const [platform, setPlatform] = useState<'all' | 'pc' | 'browser'>('all');
+  const [memory, setMemory] = useState<string>('');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,50 +31,64 @@ export default function GameForm({ onSearch }: GameFormProps) {
       .split(',')
       .map(s => s.trim())
       .filter(Boolean);
-
     const memoryGb = parseInt(memory, 10);
-    if (genres.length === 0 || isNaN(memoryGb) || memoryGb <= 0) {
-      alert('Informe ao menos um gênero e memória > 0');
+    if (!genres.length || isNaN(memoryGb) || memoryGb <= 0) {
+      alert('Informe gênero e memória > 0');
       return;
     }
-
     onSearch({ genres, platform, memory: memoryGb });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Gêneros (vírgula):</label>
-        <input
-          type="text"
-          placeholder="Shooter, MMORPG..."
-          value={genresText}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setGenresText(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Plataforma:</label>
-        <select
-          value={platform}
-          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-            setPlatform(e.target.value as 'all' | 'pc' | 'browser')
-          }
-        >
-          <option value="all">All</option>
-          <option value="pc">PC</option>
-          <option value="browser">Browser</option>
-        </select>
-      </div>
-      <div>
-        <label>Memória (GB):</label>
-        <input
-          type="number"
-          min="1"
-          value={memory}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setMemory(e.target.value)}
-        />
-      </div>
-      <button type="submit">Buscar Jogo</button>
-    </form>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}
+    >
+      <Stack spacing={3}>
+        <FormControl fullWidth>
+          <FormLabel>Gêneros (vírgula)</FormLabel>
+          <Input
+            value={genresText}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setGenresText(e.target.value)
+            }
+            placeholder="Shooter, MMORPG..."
+          />
+        </FormControl>
+
+        <FormControl fullWidth>
+          <FormLabel>Plataforma</FormLabel>
+          <Select
+            value={platform}
+            onChange={(e: SelectChangeEvent) =>
+              setPlatform(e.target.value as 'all' | 'pc' | 'browser')
+            }
+          >
+            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="pc">PC</MenuItem>
+            <MenuItem value="browser">Browser</MenuItem>
+          </Select>
+        </FormControl>
+
+        <FormControl fullWidth>
+          <FormLabel>Memória (GB)</FormLabel>
+          <Input
+            type="number"
+            value={memory}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setMemory(e.target.value)
+            }
+            inputProps={{ min: 1 }}
+          />
+        </FormControl>
+
+        <Button variant="contained" color="primary" type="submit">
+          Buscar Jogo
+        </Button>
+      </Stack>
+    </Box>
   );
-}
+};
+
+export default GameForm;
