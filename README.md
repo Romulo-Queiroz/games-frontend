@@ -1,69 +1,117 @@
-# React + TypeScript + Vite
+# Games Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface React que consome a Web API **GameServiceAPI** para recomendar jogos gratuitos com base em gênero, plataforma e memória RAM.
 
-Currently, two official plugins are available:
+## Tecnologias e bibliotecas utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* **Vite** – ferramenta de build rápida para projetos React
+* **React + TypeScript** – framework de UI com tipagem estática
+* **Axios** – cliente HTTP para requisições à API
+* **MUI (Material‑UI)** – biblioteca de componentes React baseada no Material Design
 
-## Expanding the ESLint configuration
+  * `@mui/material`
+  * `@mui/icons-material`
+  * `@emotion/react` + `@emotion/styled` para CSS‑in‑JS
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Estrutura do projeto
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```
+games-frontend/
+├── node_modules/
+│
+├── public/
+│   ├ index.html
+│   └ vite.svg
+│
+├── src/
+│   ├ api/
+│   │   └ gamesApi.ts
+│   │
+│   ├ assets/                ← (opcional: imagens, fontes etc.)
+│   │
+│   ├ components/
+│   │   ├ GameForm.tsx
+│   │   └ GameResult.tsx
+│   │
+│   ├ App.tsx
+│   ├ App.css
+│   ├ main.tsx
+│   └ vite-env.d.ts
+│
+├── .env                     ← variáveis de ambiente (ex. VITE_API_BASE_URL)
+├── .gitignore
+├── index.html               ← cópia em root, mas só o `public/index.html` é usado
+├── package.json
+├── package-lock.json
+├── README-frontend.md
+├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
+└── vite.config.ts
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Variáveis de ambiente
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Crie um arquivo `.env` na raiz do `games-frontend` para definir a URL base da API:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_BASE_URL=https://localhost:5001
 ```
+
+> Se não informado, o frontend usa `https://localhost:5001` como padrão.
+
+## Como rodar o projeto
+
+1. **Instalar dependências**
+
+   ```bash
+   npm install
+   ```
+
+2. **Executar em modo de desenvolvimento**
+
+   ```bash
+   npm run dev
+   ```
+
+   * Abre o servidor Vite em `http://localhost:5173/` por padrão.
+
+3. **Build para produção**
+
+   ```bash
+   npm run build
+   ```
+
+   * Gera a pasta `dist/` com os arquivos otimizados.
+
+4. **Pré‑visualizar o build**
+
+   ```bash
+   npm run preview
+   ```
+
+## Scripts disponíveis
+
+No `package.json`:
+
+| Comando           | Descrição                              |
+| ----------------- | -------------------------------------- |
+| `npm run dev`     | Inicia servidor Vite para dev (HMR)    |
+| `npm run build`   | Gera build de produção em `dist/`      |
+| `npm run preview` | Serve o conteúdo de `dist/` localmente |
+
+## Uso
+
+1. Abra `http://localhost:5173` no navegador.
+2. Preencha:
+
+   * **Gêneros** (vírgula separados: `Shooter,MMORPG`)
+   * **Plataforma** (`all`, `pc` ou `browser`)
+   * **Memória (GB)** (inteiro > 0)
+3. Clique em **Buscar Jogo**.
+4. Veja o jogo recomendado ou a mensagem de erro.
+
+---
+
+Desenvolvido com ❤️ por Rômulo Queiroz. Qualquer dúvida, abra uma issue ou pull request neste repositório.
