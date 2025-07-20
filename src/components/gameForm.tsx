@@ -3,6 +3,7 @@ import type { FC, ChangeEvent, FormEvent } from 'react';
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   FormLabel,
   Input,
@@ -20,9 +21,10 @@ interface GameFormProps {
     platform: string;
     memory: number;
   }) => void;
+    loading: boolean;
 }
 
-const GameForm: FC<GameFormProps> = ({ onSearch }) => {
+const GameForm: FC<GameFormProps> = ({ onSearch, loading }) => {
   const [genresText, setGenresText] = useState<string>('');
   const [platform, setPlatform] = useState<'all' | 'pc' | 'browser'>('all');
   const [memory, setMemory] = useState<string>('');
@@ -41,7 +43,7 @@ const GameForm: FC<GameFormProps> = ({ onSearch }) => {
     onSearch({ genres, platform, memory: memoryGb });
   };
 
-  return (
+ return (
     <Paper elevation={4} sx={{ p: 4, maxWidth: 600, mx: 'auto', mt: 6 }}>
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={3}>
@@ -51,6 +53,7 @@ const GameForm: FC<GameFormProps> = ({ onSearch }) => {
             placeholder="Ex: Shooter, Strategy"
             value={genresText}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setGenresText(e.target.value)}
+            disabled={loading}
           />
 
           <TextField
@@ -58,9 +61,8 @@ const GameForm: FC<GameFormProps> = ({ onSearch }) => {
             fullWidth
             label="Plataforma"
             value={platform}
-            onChange={(e) =>
-              setPlatform(e.target.value as 'all' | 'pc' | 'browser')
-            }
+            onChange={(e) => setPlatform(e.target.value as any)}
+            disabled={loading}
           >
             <MenuItem value="all">All</MenuItem>
             <MenuItem value="pc">PC</MenuItem>
@@ -74,10 +76,20 @@ const GameForm: FC<GameFormProps> = ({ onSearch }) => {
             value={memory}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setMemory(e.target.value)}
             inputProps={{ min: 1 }}
+            disabled={loading}
           />
 
-          <Button type="submit" variant="contained" size="large">
-            Buscar Jogo
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            disabled={loading}
+            sx={{ height: 56 }}
+          >
+            {loading
+              ? <CircularProgress size={24} color="inherit" />
+              : 'Buscar Jogo'
+            }
           </Button>
         </Stack>
       </Box>

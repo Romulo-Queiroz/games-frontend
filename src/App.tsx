@@ -9,6 +9,7 @@ function App() {
   // Estado para o jogo recomendado e erro
   const [game, setGame]   = useState<RecommendedGameDto | null>(null);
   const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Função que chama a API e atualiza estados
   const handleSearch = async (filters: {
@@ -18,6 +19,7 @@ function App() {
   }) => {
     setError('');
     setGame(null);
+    setLoading(true);
     try {
       const data = await getRecommendedGame(filters);
       setGame(data);
@@ -27,6 +29,8 @@ function App() {
       } else {
         setError('Erro ao buscar o jogo. Tente novamente.');
       }
+    } finally {
+    setLoading(false);
     }
   };
 
@@ -48,7 +52,10 @@ function App() {
           Recomendador de Jogos
         </Typography>
 
-        <GameForm onSearch={handleSearch} />
+        <GameForm
+        onSearch={handleSearch}
+        loading={loading}
+      />
         <GameResult game={game} error={error} />
       </Container>
     </>
