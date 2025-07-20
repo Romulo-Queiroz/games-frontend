@@ -17,12 +17,16 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'https://localhost:44380'
 });
 
-export function getRecommendedGame(filters: Filters): Promise<RecommendedGameDto> {
+export async function getRecommendedGame(filters: Filters): Promise<RecommendedGameDto> {
   const params = new URLSearchParams();
   filters.genres.forEach(g => params.append('genres', g));
   params.append('platform', filters.platform);
   params.append('memory', String(filters.memory));
-  return api
-    .get<RecommendedGameDto>(`/api/games/compatible?${params.toString()}`)
-    .then(res => res.data);
+  try {
+    const res = await api.get<RecommendedGameDto>(`/api/games/compatible?${params.toString()}`);
+    return res.data;
+  } catch (err: any) {
+    const backendMsg = err.response?.data || err.message || 'Erro desconhecido';
+    throw { ...err, backendMsg };
+  }
 }

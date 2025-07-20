@@ -24,19 +24,17 @@ function App() {
       const data = await getRecommendedGame(filters);
       setGame(data);
     } catch (err: any) {
-      if (err.response?.status === 404) {
-        setError(err.response.data as string);
-      } else {
-        setError('Erro ao buscar o jogo. Tente novamente.');
-      }
+      // Use backend error message if available
+      setError(err.backendMsg || 'Erro ao buscar o jogo. Tente novamente.');
     } finally {
-    setLoading(false);
+      setLoading(false);
     }
   };
+
   
 
   return (
-       <>
+      <>
       <BackgroundVideo />
 
       <Container sx={{ position: 'relative', zIndex: 1, py: 4 }}>
@@ -62,7 +60,7 @@ function App() {
                sx={{
                 display: 'flex',
                 flexDirection: { xs: 'column', md: 'row' },
-                alignItems: 'stretch',   // estica os filhos para a mesma altura
+                alignItems: 'stretch',  
                 gap: 4,
                 mt: 4,
               }}
@@ -71,6 +69,7 @@ function App() {
                 <GameForm
                   onSearch={handleSearch}
                   loading={loading}
+                  error={error}
                 />
               </Box>
 
@@ -82,7 +81,7 @@ function App() {
           : (
             <Box sx={{ display: 'flex', justifyContent: 'center', px: 2 }}>
             <Box sx={{ width: '100%', maxWidth: 700 }}>
-              <GameForm onSearch={handleSearch} loading={loading} />
+              <GameForm onSearch={handleSearch} loading={loading} error={error} />
             </Box>
           </Box>
           )

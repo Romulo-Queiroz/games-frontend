@@ -5,30 +5,31 @@ import {
   Box,
   Button,
   CircularProgress,
-  FormControl,
-  FormLabel,
-  Input,
   MenuItem,
-  Select,
   Stack,
   TextField,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
 import { Paper } from '@mui/material';
-
+import ErrorDialog from './ErrorDialog';
+import Alert from '@mui/material/Alert';
 interface GameFormProps {
   onSearch: (filters: {
     genres: string[];
     platform: string;
     memory: number;
   }) => void;
-    loading: boolean;
+  loading: boolean;
+  error?: string;
 }
 
-const GameForm: FC<GameFormProps> = ({ onSearch, loading }) => {
+const GameForm: FC<GameFormProps> = ({ onSearch, loading, error }) => {
   const [genresText, setGenresText] = useState<string>('');
   const [platform, setPlatform] = useState<'all' | 'pc' | 'browser'>('all');
   const [memory, setMemory] = useState<string>('');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMsg, setDialogMsg]   = useState('');
+  const handleClose = () => setDialogOpen(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,15 +37,23 @@ const GameForm: FC<GameFormProps> = ({ onSearch, loading }) => {
       .split(',')
       .map(s => s.trim())
       .filter(Boolean);
+      const memNum = Number(memory);
     const memoryGb = parseInt(memory, 10);
-    if (!genres.length || isNaN(memoryGb) || memoryGb <= 0) {
-      alert('Informe gênero e memória > 0');
+    if (!genres.length) {
+      setDialogMsg('Por favor, informe ao menos um gênero.');
+      setDialogOpen(true);
+      return;
+    }
+    if (isNaN(memNum) || memNum <= 0) {
+      setDialogMsg('Por favor, informe uma quantidade de memória válida (>0).');
+      setDialogOpen(true);
       return;
     }
     onSearch({ genres, platform, memory: memoryGb });
   };
 
  return (
+  <>
     <Paper
       elevation={4}
       sx={theme => ({
@@ -63,13 +72,18 @@ const GameForm: FC<GameFormProps> = ({ onSearch, loading }) => {
         <Stack spacing={3}>
           <TextField
             fullWidth
-            label="Gêneros (vírgula)"
+            label="Gêneros"
             placeholder="Ex: Shooter, Strategy"
             value={genresText}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setGenresText(e.target.value)}
             disabled={loading}
           />
-
+          {error && (
+            <Box sx={{ mt: 2 }}>
+              <Alert severity="warning">{error}</Alert>
+            </Box>
+          )}
+         
           <TextField
             select
             fullWidth
@@ -108,6 +122,14 @@ const GameForm: FC<GameFormProps> = ({ onSearch, loading }) => {
         </Stack>
       </Box>
     </Paper>
+
+    <ErrorDialog
+       open={dialogOpen}
+       message={dialogMsg}
+       onClose={handleClose}
+     />
+    </>
+
   );
 };
 

@@ -20,27 +20,31 @@ games-frontend/
 ├── node_modules/
 │
 ├── public/
-│   ├ index.html
-│   └ vite.svg
+│   ├── index.html
+│   ├── background.mp4
+│   └── vite.svg
 │
 ├── src/
-│   ├ api/
-│   │   └ gamesApi.ts
+│   ├── api/
+│   │   └── gamesApi.ts
 │   │
-│   ├ assets/                ← (opcional: imagens, fontes etc.)
+│   ├── assets/                ← (opcional: imagens, fontes etc.)
 │   │
-│   ├ components/
-│   │   ├ GameForm.tsx
-│   │   └ GameResult.tsx
+│   ├── components/
+│   │   ├── BackgroundVideo.tsx
+│   │   ├── ErrorDialog.tsx
+│   │   ├── GameForm.tsx
+│   │   ├── GameResult.tsx
+│   │   └── WarningAlert.tsx
 │   │
-│   ├ App.tsx
-│   ├ App.css
-│   ├ main.tsx
-│   └ vite-env.d.ts
+│   ├── App.tsx
+│   ├── App.css
+│   ├── main.tsx
+│   └── vite-env.d.ts
 │
-├── .env                     ← variáveis de ambiente (ex. VITE_API_BASE_URL)
+├── .env                       ← variáveis de ambiente (ex. VITE_API_BASE_URL)
 ├── .gitignore
-├── index.html               ← cópia em root, mas só o `public/index.html` é usado
+├── index.html                 ← (copia em root; apenas public/index.html é usada)
 ├── package.json
 ├── package-lock.json
 ├── README-frontend.md
