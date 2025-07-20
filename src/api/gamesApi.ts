@@ -3,6 +3,8 @@ import axios from 'axios';
 export interface RecommendedGameDto {
   title: string;
   gameUrl: string;
+  thumbnail: string;
+  shortDescription: string;
 }
 
 interface Filters {
