@@ -6,12 +6,9 @@ import GameForm from './components/gameForm';
 import GameResult from './components/gameResult';
 
 function App() {
-  // Estado para o jogo recomendado e erro
   const [game, setGame]   = useState<RecommendedGameDto | null>(null);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-
-  // Função que chama a API e atualiza estados
   const handleSearch = async (filters: {
     genres: string[];
     platform: string;

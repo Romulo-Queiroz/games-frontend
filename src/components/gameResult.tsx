@@ -6,7 +6,6 @@ import {
   CardContent,
   Link,
   Typography,
-  /* … demais componentes MUI … */
 } from '@mui/material';
 
 interface GameResultProps {
