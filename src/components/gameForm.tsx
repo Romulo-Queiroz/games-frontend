@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { FC, ChangeEvent, FormEvent } from 'react';
 import {
+  alpha,
   Box,
   Button,
   CircularProgress,
@@ -44,8 +45,21 @@ const GameForm: FC<GameFormProps> = ({ onSearch, loading }) => {
   };
 
  return (
-    <Paper elevation={4} sx={{ p: 4, maxWidth: 600, mx: 'auto', mt: 6 }}>
-      <Box component="form" onSubmit={handleSubmit}>
+    <Paper
+      elevation={4}
+      sx={theme => ({
+        p: 4,
+        bgcolor: alpha(theme.palette.background.paper, 0.5),
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        mt: { xs: 6, md: 0 },
+      })}
+    >
+      <Box component="form" onSubmit={handleSubmit}
+        sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
+      >
         <Stack spacing={3}>
           <TextField
             fullWidth

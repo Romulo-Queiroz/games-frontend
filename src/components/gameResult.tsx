@@ -1,5 +1,6 @@
 import type { FC } from 'react'; 
 import {
+  alpha,
   Button,
   Card,
   CardActions,
@@ -23,13 +24,25 @@ const GameResult: FC<GameResultProps> = ({ game, error }) => {
   if (!game) return null;
 
   return (
-   <Card sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}>
+   <Card  elevation={4}
+     sx={theme => ({
+        p: 4,
+        bgcolor: alpha(theme.palette.background.paper, 0.5),
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        mt: { xs: 6, md: 0 },
+      })}
+    
+    >
       <CardMedia
         component="img"
         height="200"
         image={game.thumbnail}
         alt={game.title}
       />
+
       <CardContent>
         <Typography variant="h5" component="div">
           {game.title}
@@ -38,12 +51,20 @@ const GameResult: FC<GameResultProps> = ({ game, error }) => {
           {game.shortDescription}
         </Typography>
       </CardContent>
+      
       <CardActions>
         <Button
           size="small"
           component="a"
           href={game.gameUrl}
           target="_blank"
+          sx={{
+              fontWeight: 'bold',
+              color: 'primary.main',     
+              textTransform: 'none',
+              fontSize: '1rem'
+            }}
+  
         >
           Adquira já!
         </Button>

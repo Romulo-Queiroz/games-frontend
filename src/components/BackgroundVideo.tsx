@@ -16,7 +16,7 @@ const BackgroundVideo: FC = () => (
       zIndex: -1
     }}
   >
-    <source src="/background.mp4" type="video/mp4" />
+    <source src="background.mp4" type="video/mp4" />
     Seu navegador não suporta vídeo em background.
   </video>
 );
