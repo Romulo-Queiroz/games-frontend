@@ -9,8 +9,10 @@ import {
   MenuItem,
   Select,
   Stack,
+  TextField,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
+import { Paper } from '@mui/material';
 
 interface GameFormProps {
   onSearch: (filters: {
@@ -40,54 +42,46 @@ const GameForm: FC<GameFormProps> = ({ onSearch }) => {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}
-    >
-      <Stack spacing={3}>
-        <FormControl fullWidth>
-          <FormLabel>Gêneros (vírgula)</FormLabel>
-          <Input
+    <Paper elevation={4} sx={{ p: 4, maxWidth: 600, mx: 'auto', mt: 6 }}>
+      <Box component="form" onSubmit={handleSubmit}>
+        <Stack spacing={3}>
+          <TextField
+            fullWidth
+            label="Gêneros (vírgula)"
+            placeholder="Ex: Shooter, Strategy"
             value={genresText}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setGenresText(e.target.value)
-            }
-            placeholder="Shooter, MMORPG..."
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setGenresText(e.target.value)}
           />
-        </FormControl>
 
-        <FormControl fullWidth>
-          <FormLabel>Plataforma</FormLabel>
-          <Select
+          <TextField
+            select
+            fullWidth
+            label="Plataforma"
             value={platform}
-            onChange={(e: SelectChangeEvent) =>
+            onChange={(e) =>
               setPlatform(e.target.value as 'all' | 'pc' | 'browser')
             }
           >
             <MenuItem value="all">All</MenuItem>
             <MenuItem value="pc">PC</MenuItem>
             <MenuItem value="browser">Browser</MenuItem>
-          </Select>
-        </FormControl>
+          </TextField>
 
-        <FormControl fullWidth>
-          <FormLabel>Memória (GB)</FormLabel>
-          <Input
+          <TextField
+            fullWidth
             type="number"
+            label="Memória (GB)"
             value={memory}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setMemory(e.target.value)
-            }
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setMemory(e.target.value)}
             inputProps={{ min: 1 }}
           />
-        </FormControl>
 
-        <Button variant="contained" color="primary" type="submit">
-          Buscar Jogo
-        </Button>
-      </Stack>
-    </Box>
+          <Button type="submit" variant="contained" size="large">
+            Buscar Jogo
+          </Button>
+        </Stack>
+      </Box>
+    </Paper>
   );
 };
 

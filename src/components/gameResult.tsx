@@ -32,7 +32,7 @@ const GameResult: FC<GameResultProps> = ({ game, error }) => {
       </CardContent>
       <CardActions>
         <Button size="small" component={Link} href={game.gameUrl} target="_blank">
-          Abrir no FreeToGame
+          Adquira já!
         </Button>
       </CardActions>
     </Card>
